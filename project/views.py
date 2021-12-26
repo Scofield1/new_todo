@@ -53,8 +53,6 @@ def update(request, id):
     if form.is_valid():
         form.save()
         return redirect('/')
-    else:
-        form = UpdateTodoForm()
     context = {'form': form}
     return render(request, 'update.html', context)
 
