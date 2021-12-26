@@ -18,7 +18,6 @@ def index(request):
         form = TodoModelForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.info(request, 'Task Saved')
             return redirect('/')
         else:
             form = TodoModelForm()
@@ -34,6 +33,8 @@ def register(request):
             form.save()
             messages.info(request, "You're Successful Registered")
             return redirect('login')
+        else:
+            messages.info(request, 'Sign Up before Log in')
     context = {'form': form}
     return render(request, 'register.html', context)
 
@@ -51,8 +52,9 @@ def update(request, id):
     form = UpdateTodoForm(request.POST or None, instance=model)
     if form.is_valid():
         form.save()
-        messages.info(request, 'Changes made')
         return redirect('/')
+    else:
+        form = UpdateTodoForm()
     context = {'form': form}
     return render(request, 'update.html', context)
 
