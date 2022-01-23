@@ -74,7 +74,7 @@
       </tr>
   {% else %}
        <tr>
-         <td><span><i class="bi bi-record"></i></span>{{ model }}</td>
+         <td><span><i class="bi bi-record"></i></span>{{ model|capfirst }}</td>
          <td><a class="btn btn-warning" href="update/{{ model.id }}">Edit</a> <a class="btn btn-danger" href="delete/{{ model.id }}">Delete</a></div></td>
         </tr>
   {% endif %}
