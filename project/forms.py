@@ -9,14 +9,18 @@ class CreateUserForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
+
 class TodoModelForm(forms.ModelForm):
     task = forms.CharField(label="", widget=forms.TextInput(attrs={'placeholder': 'Add you task...'}))
+
     class Meta:
         model = TodoModel
-        fields = ['task',]
+        fields = ['task']
+
 
 class UpdateTodoForm(forms.ModelForm):
     task = forms.CharField(label="", widget=forms.TextInput(attrs={'placeholder': 'Add you task...'}))
+
     class Meta:
         model = TodoModel
-        fields = ['task','complete']
+        fields = ['task', 'complete']

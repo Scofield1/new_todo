@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 
+
 @login_required(login_url='login')
 def index(request):
     model = TodoModel.objects.all()
@@ -14,6 +15,12 @@ def index(request):
     count_completed_task = completed_task.count()
     count_uncompleted_task = count_task - count_completed_task
 
+    if 'q' in request.GET:
+        q = request.GET['q']
+        model = TodoModel.objects.filter(task__icontains=q)
+    else:
+        model = TodoModel.objects.all()
+
     if request.method == 'POST':
         form = TodoModelForm(request.POST)
         if form.is_valid():
@@ -21,7 +28,7 @@ def index(request):
             return redirect('/')
         else:
             form = TodoModelForm()
-    context = {'models':model, 'form': form, 'total': count_task, 'completed': count_completed_task, 'uncompleted': count_uncompleted_task}
+    context = {'models': model, 'form': form, 'total': count_task, 'completed': count_completed_task, 'uncompleted': count_uncompleted_task,}
     return render(request, 'index.html', context)
 
 
@@ -38,6 +45,7 @@ def register(request):
     context = {'form': form}
     return render(request, 'register.html', context)
 
+
 @login_required(login_url='login')
 def delete(request, id):
     model = TodoModel(id=id)
@@ -45,6 +53,7 @@ def delete(request, id):
         model.delete()
         return redirect('/')
     return render(request, 'delete.html', {})
+
 
 @login_required(login_url='login')
 def update(request, id):
@@ -55,6 +64,7 @@ def update(request, id):
         return redirect('/')
     context = {'form': form}
     return render(request, 'update.html', context)
+
 
 def login_page(request):
     if request.method == 'POST':
@@ -68,6 +78,7 @@ def login_page(request):
             messages.info(request, 'Invalid Credentials')
     context = {}
     return render(request, 'login.html', context)
+
 
 def logout_page(request):
     logout(request)
